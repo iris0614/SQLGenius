@@ -6,86 +6,124 @@ import pandas as pd
 from st_aggrid import AgGrid, GridOptionsBuilder
 
 # Streamlit setup
-st.set_page_config(layout="wide")
+st.set_page_config(layout="wide", page_title="SQL Genius", page_icon="🚀")
 
 # Custom CSS for styling
 st.markdown(
     """
     <style>
+    /* General styles */
     .block-container {
-        padding: 1rem 2rem;
+        padding: 2rem 4rem;
+        max-width: 1200px;
+        margin: auto;
     }
     .title {
         margin-top: 20px;
-        margin-bottom: 20px;
+        margin-bottom: 40px;
         text-align: center;
-        font-size: 32px;
+        font-size: 42px;
         font-weight: bold;
-        color: #4CAF50;  /* Added color for the title */
-        font-family: 'Arial', sans-serif;
+        color: #2E86C1;  /* Modern blue color */
+        font-family: 'SF Pro Display', 'Arial', sans-serif;
     }
     .section-header {
-        font-size: 24px;
+        font-size: 28px;
         font-weight: bold;
-        font-family: 'Arial', sans-serif;
-        margin-bottom: 10px;
+        font-family: 'SF Pro Display', 'Arial', sans-serif;
+        color: #34495E;  /* Dark gray for headers */
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #EAEDED;  /* Subtle border */
     }
     .description {
-        font-size: 20px;
-        font-family: 'Arial', sans-serif;
-        color: #444;
-        margin-bottom: 10px;
+        font-size: 18px;
+        font-family: 'SF Pro Text', 'Arial', sans-serif;
+        color: #566573;  /* Soft gray for text */
+        margin-bottom: 20px;
+        line-height: 1.6;
     }
     .success-message {
-        color: #155724;
-        background-color: #d4edda;
-        padding: 10px;
-        border-radius: 5px;
+        color: #27AE60;  /* Green for success */
+        background-color: #E8F8F5;  /* Light green background */
+        padding: 15px;
+        border-radius: 8px;
         font-size: 18px;
-        font-family: 'Arial', sans-serif;
+        font-family: 'SF Pro Text', 'Arial', sans-serif;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  /* Subtle shadow */
     }
     .error-message {
-        color: #721c24;
-        background-color: #f8d7da;
-        padding: 10px;
-        border-radius: 5px;
+        color: #E74C3C;  /* Red for errors */
+        background-color: #FDEDEC;  /* Light red background */
+        padding: 15px;
+        border-radius: 8px;
         font-size: 18px;
-        font-family: 'Arial', sans-serif;
+        font-family: 'SF Pro Text', 'Arial', sans-serif;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  /* Subtle shadow */
     }
     .stTextArea>div>textarea {
         font-size: 18px !important;
-        font-family: 'Arial', sans-serif;
+        font-family: 'SF Pro Text', 'Arial', sans-serif;
+        border-radius: 8px;
+        border: 1px solid #D5D8DC;  /* Light border */
+        padding: 12px;
     }
     .stCodeBlock {
         font-size: 16px;
-        font-family: 'Courier New', monospace;
+        font-family: 'SF Mono', 'Courier New', monospace;
+        background-color: #F4F6F6;  /* Light gray background */
+        padding: 12px;
+        border-radius: 8px;
+        border: 1px solid #D5D8DC;  /* Light border */
     }
     .stDownloadButton button {
         font-size: 16px;
-        font-family: 'Arial', sans-serif;
+        font-family: 'SF Pro Text', 'Arial', sans-serif;
+        background-color: #2E86C1;  /* Modern blue */
+        color: white;
+        border-radius: 8px;
+        padding: 10px 20px;
+        border: none;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  /* Subtle shadow */
     }
     .stButton>button {
         font-size: 18px;
-        font-family: 'Arial', sans-serif;
-        margin-top: 10px;
+        font-family: 'SF Pro Text', 'Arial', sans-serif;
+        background-color: #2E86C1;  /* Modern blue */
+        color: white;
+        border-radius: 8px;
+        padding: 12px 24px;
+        border: none;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  /* Subtle shadow */
+        transition: background-color 0.3s ease;  /* Smooth hover effect */
+    }
+    .stButton>button:hover {
+        background-color: #2471A3;  /* Darker blue on hover */
     }
     .ag-theme-streamlit {
-        --ag-header-background-color: #f8f9fa;
-        --ag-header-foreground-color: #495057;
+        --ag-header-background-color: #F4F6F6;  /* Light gray for header */
+        --ag-header-foreground-color: #34495E;  /* Dark gray for text */
+        --ag-border-color: #D5D8DC;  /* Light border */
+        --ag-row-hover-color: #EAEDED;  /* Light gray on hover */
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  /* Subtle shadow */
     }
     </style>
     """, unsafe_allow_html=True
 )
 
 # Title with consistent style and color
-st.markdown('<div class="title">SQL Agent Interface 🚀</div>', unsafe_allow_html=True)
+st.markdown('<div class="title">SQL Genius 🚀</div>', unsafe_allow_html=True)
 
 # Introduction and Usage Guide
 st.markdown('<div class="section-header">How to Use This Interface</div>', unsafe_allow_html=True)
 st.markdown(
     """
     <div class="description">
-        Welcome to the SQL Agent Interface! Here's how you can use it:
+        Welcome to the SQL Genius Interface! Here's how you can use it:
         <ol>
             <li>Select a database from the options below.</li>
             <li>Enter a natural language question in the query box.</li>
@@ -101,7 +139,9 @@ st.markdown(
 st.markdown('<div class="section-header">Choose a Database <img src="https://img.icons8.com/ios-filled/50/000000/database.png" alt="Database Icon" style="vertical-align: middle; width: 20px; height: 20px;"></div>', unsafe_allow_html=True)
 db_choice = st.radio(
     "",  # Empty label for cleaner appearance
-    ("Chinook.db", "Northwind.db", "VitalDB.db", "Upload your own .db file")
+    ("Chinook.db", "Northwind.db", "VitalDB.db", "Upload your own .db file"),
+    index=0,
+    key="db_choice"
 )
 
 # Example Questions for Each Database
@@ -166,7 +206,7 @@ else:
 # Query Input and Results
 st.markdown('<div class="section-header">Enter Your Query ✍️</div>', unsafe_allow_html=True)
 st.markdown('<div class="description">Ask a natural language question, and I\'ll generate the SQL query for you:</div>', unsafe_allow_html=True)
-query = st.text_area("", height=150)
+query = st.text_area("", height=150, placeholder="Type your question here...")
 
 if "generated_sql" not in st.session_state:
     st.session_state.generated_sql = ""
@@ -206,7 +246,7 @@ if st.session_state.result:
         df = pd.DataFrame(data, columns=headers)
 
         # Set dynamic table height based on number of rows
-        table_height = min(200, 40 + 40 * len(df))  # Dynamic height with a max limit of 400px
+        table_height = min(400, 40 + 40 * len(df))  # Dynamic height with a max limit of 400px
 
         # Display using AgGrid
         gb = GridOptionsBuilder.from_dataframe(df)
