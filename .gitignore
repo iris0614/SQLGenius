@@ -1,0 +1,53 @@
+# Ignore the .env file (contains sensitive information like API keys)
+.env
+
+# Ignore IDE-specific files
+.vscode/
+.idea/
+
+# Ignore Python virtual environment
+venv/
+env/
+.venv/
+
+# Ignore Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.py.class
+
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Ignore local development files
+*.log
+*.sqlite3
+*.db
+
+# Ignore macOS system files
+.DS_Store
+
+# Ignore pytest cache
+.pytest_cache/
+
+# Ignore build and distribution files
+build/
+dist/
+*.egg-info/
+
+# Ignore coverage reports
+.coverage
+htmlcov/
+
+# Ignore mypy cache
+.mypy_cache/
+
+# Ignore pipenv files
+Pipfile
+Pipfile.lock
+
+# Ignore other temporary files
+*.swp
+*.swo
+*~

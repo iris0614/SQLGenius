@@ -1,0 +1,7 @@
+sqlite3
+openai
+python-dotenv
+pydantic
+streamlit
+docstring-parser
+streamlit-aggrid
