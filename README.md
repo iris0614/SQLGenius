@@ -44,8 +44,8 @@ This project is a SQL query agent application that uses OpenAI's language model 
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/iris0614/sql-agent1022.git
-   cd sql-agent1022
+   git clone git@github.com:iris0614/SQLGenius.git
+   cd SQLGenius
    ```
 
 2. **Install dependencies**:
