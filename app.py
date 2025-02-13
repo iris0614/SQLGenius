@@ -208,6 +208,13 @@ st.markdown('<div class="section-header">Enter Your Query ✍️</div>', unsafe_
 st.markdown('<div class="description">Ask a natural language question, and I\'ll generate the SQL query for you:</div>', unsafe_allow_html=True)
 query = st.text_area("", height=150, placeholder="Type your question here...")
 
+# Initialize session state for API call count
+if "api_call_count" not in st.session_state:
+    st.session_state.api_call_count = 0
+
+# Maximum allowed API calls per day
+MAX_API_CALLS = 20
+
 if "generated_sql" not in st.session_state:
     st.session_state.generated_sql = ""
 if "result" not in st.session_state:
@@ -215,20 +222,28 @@ if "result" not in st.session_state:
 
 if st.button("Execute Query"):
     if query:
-        try:
-            # Initialize database connection and SQL agent
-            database = db_connection(st.session_state.db_path)
-            sql_agent = tiny_sql_agent(database, sensitive_database=True)
+        if st.session_state.api_call_count >= MAX_API_CALLS:
+            st.markdown(f'<div class="error-message">You have reached the maximum number of API calls ({MAX_API_CALLS}) for today. Please try again tomorrow.</div>', unsafe_allow_html=True)
+        else:
+            try:
+                # Initialize database connection and SQL agent
+                database = db_connection(st.session_state.db_path)
+                sql_agent = tiny_sql_agent(database, sensitive_database=True)
 
-            # Fetch the generated SQL and result
-            generated_sql, result = sql_agent.run(query, return_sql=True)
-            st.session_state.generated_sql = generated_sql
-            st.session_state.result = result
+                # Fetch the generated SQL and result
+                generated_sql, result = sql_agent.run(query, return_sql=True)
+                st.session_state.generated_sql = generated_sql
+                st.session_state.result = result
 
-            # Success message
-            st.markdown('<div class="success-message">Query executed successfully! 🎉</div>', unsafe_allow_html=True)
-        except Exception as e:
-            st.markdown(f'<div class="error-message">Error: {e}</div>', unsafe_allow_html=True)
+                # Increment API call count
+                st.session_state.api_call_count += 1
+
+                # Success message
+                st.markdown('<div class="success-message">Query executed successfully! 🎉</div>', unsafe_allow_html=True)
+            except Exception as e:
+                st.markdown(f'<div class="error-message">Error: {e}</div>', unsafe_allow_html=True)
+    else:
+        st.markdown('<div class="error-message">Please enter a valid query.</div>', unsafe_allow_html=True)
 
 # Display Generated SQL
 if st.session_state.generated_sql:
