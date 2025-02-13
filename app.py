@@ -213,7 +213,19 @@ if "api_call_count" not in st.session_state:
     st.session_state.api_call_count = 0
 
 # Maximum allowed API calls per day
-MAX_API_CALLS = 20
+MAX_API_CALLS = 100  # 设置每天最多 100 次 API 调用
+
+# 预设的异常消息回复
+INVALID_QUERY_RESPONSE = "Sorry, I couldn't understand your question. Please ask a clear and relevant question about the database."
+
+# 超过 API 调用限制时的可爱提示信息
+API_LIMIT_MESSAGE = """
+<div class="description" style="text-align: center; color: #2E86C1; font-size: 20px;">
+    <p>🌟 Oh no! It looks like you've used up your free daily quota of 100 queries. 🌟</p>
+    <p>Don't worry, though! You can come back tomorrow for more SQL magic. 🪄✨</p>
+    <p>Thank you for using SQL Genius! 💖</p>
+</div>
+"""
 
 if "generated_sql" not in st.session_state:
     st.session_state.generated_sql = ""
@@ -223,7 +235,8 @@ if "result" not in st.session_state:
 if st.button("Execute Query"):
     if query:
         if st.session_state.api_call_count >= MAX_API_CALLS:
-            st.markdown(f'<div class="error-message">You have reached the maximum number of API calls ({MAX_API_CALLS}) for today. Please try again tomorrow.</div>', unsafe_allow_html=True)
+            # 超过调用限制时显示可爱提示信息
+            st.markdown(API_LIMIT_MESSAGE, unsafe_allow_html=True)
         else:
             try:
                 # Initialize database connection and SQL agent
@@ -241,7 +254,8 @@ if st.button("Execute Query"):
                 # Success message
                 st.markdown('<div class="success-message">Query executed successfully! 🎉</div>', unsafe_allow_html=True)
             except Exception as e:
-                st.markdown(f'<div class="error-message">Error: {e}</div>', unsafe_allow_html=True)
+                # 异常消息处理：如果用户输入无关或混乱的消息，返回预设内容
+                st.markdown(f'<div class="error-message">{INVALID_QUERY_RESPONSE}</div>', unsafe_allow_html=True)
     else:
         st.markdown('<div class="error-message">Please enter a valid query.</div>', unsafe_allow_html=True)
 
@@ -250,7 +264,7 @@ if st.session_state.generated_sql:
     st.markdown('<div class="section-header">Generated SQL Query:</div>', unsafe_allow_html=True)
     st.code(st.session_state.generated_sql, language='sql')
 
-# Display Query Results with adjustable table height and width
+# Display Query Results with adjustable table height
 st.markdown('<div class="section-header">Query Results:</div>', unsafe_allow_html=True)
 if st.session_state.result:
     try:
@@ -263,30 +277,11 @@ if st.session_state.result:
         # Set dynamic table height based on number of rows
         table_height = min(400, 40 + 40 * len(df))  # Dynamic height with a max limit of 400px
 
-        # Set dynamic table width based on number of columns and content
-        num_columns = len(df.columns)
-        column_width = 150  # Default column width
-        table_width = min(1200, num_columns * column_width)  # Dynamic width with a max limit of 1200px
-
         # Display using AgGrid
         gb = GridOptionsBuilder.from_dataframe(df)
-        gb.configure_default_column(
-            resizable=True,  # Allow columns to be resized
-            wrapText=True,   # Wrap text in cells
-            autoHeight=True, # Automatically adjust row height based on content
-            width=column_width  # Set default column width
-        )
+        gb.configure_default_column(resizable=True, wrapText=True)
         grid_options = gb.build()
-
-        # Render the AgGrid table
-        AgGrid(
-            df,
-            gridOptions=grid_options,
-            height=table_height,
-            width=table_width,  # Set dynamic table width
-            fit_columns_on_grid_load=True,  # Fit columns to the grid width
-            theme="streamlit"
-        )
+        AgGrid(df, gridOptions=grid_options, height=table_height, fit_columns_on_grid_load=True, theme="streamlit")
 
         # Add a download button for CSV
         csv = df.to_csv(index=False).encode('utf-8')
