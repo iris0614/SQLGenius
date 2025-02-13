@@ -6,7 +6,7 @@ This project is a SQL query agent application that uses OpenAI's language model 
 - Run SQL queries by typing either SQL commands or natural language questions.  
 - Display query results in an interactive table and optionally download them as `.csv`.
   
-You can access the live app here: [SQL Genius]([https://streamlit.io/](https://sqlgenius20250212.streamlit.app/).
+You can access the live app here: [SQL Genius](https://sqlgenius20250212.streamlit.app/).
 
 ---
 
