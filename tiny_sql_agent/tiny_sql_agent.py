@@ -1,17 +1,18 @@
-# tiny_sql_agent.py
 from .db_connection import db_connection
 from dotenv import load_dotenv
 from openai import OpenAI
 from .generate_tools_schema import generate_json_schema
 import json
 from copy import deepcopy
+import streamlit as st  # 导入 Streamlit
 
 load_dotenv()
 
 class tiny_sql_agent:
     def __init__(self, db, sensitive_database=False):
         self.db = db
-        self.client = OpenAI()
+        # 从 Streamlit Secrets 中读取 OpenAI API Key
+        self.client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])  # 使用 st.secrets 读取 API Key
         self.sensitive_database = sensitive_database
         self.tools = [
             generate_json_schema(i)

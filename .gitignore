@@ -1,6 +1,9 @@
 # Ignore the .env file (contains sensitive information like API keys)
 .env
 
+# Ignore the .streamlit/secrets.toml file
+.streamlit/secrets.toml
+
 # Ignore IDE-specific files
 .vscode/
 .idea/
