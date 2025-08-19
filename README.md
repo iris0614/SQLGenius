@@ -1,119 +1,187 @@
 # SQL Genius 🚀
 
-This project is a SQL query agent application that uses OpenAI's language model to interpret and execute SQL queries on a user-uploaded database. The application is built with [Streamlit](https://streamlit.io/), providing an interactive interface for users to:
+A powerful SQL query agent application that leverages OpenAI's language model to interpret and execute SQL queries on user-uploaded databases. Built with Streamlit, it provides an intuitive interface for natural language to SQL query conversion and execution.
 
-- Upload a `.db` file (or use one of several sample databases).  
-- Run SQL queries by typing either SQL commands or natural language questions.  
-- Display query results in an interactive table and optionally download them as `.csv`.
-  
-You can access the live app here: [SQL Genius](https://sqlgenius20250212.streamlit.app/).
+**Live Demo**: [SQL Genius](https://sqlgenius20250212.streamlit.app/)
+
+> **Note**: This project builds upon and references the excellent work from [@yefan/tiny-sql-agent](https://github.com/yefan/tiny-sql-agent). We extend their core concepts with additional features and improvements.
 
 ---
 
-## Features ✨
+## ✨ Key Features
 
-1. **Flexible Database Upload** 📂  
-   - Easily upload and query your own SQLite `.db` file.  
-   - Preloaded with sample databases like `Chinook.db`, `Northwind.db`, and `VitalDB.db` for quick testing.
+### 🔍 **Intelligent Query Processing**
+- **Natural Language to SQL**: Ask questions in plain English and get SQL queries automatically generated
+- **Direct SQL Input**: Write and execute custom SQL queries directly
+- **AI-Powered Translation**: OpenAI's language model handles complex query interpretation
 
-2. **AI-Powered Query Generation** 🤖  
-   - Enter **natural language questions** or **SQL**.  
-   - The app uses OpenAI's language model to interpret and translate your request into a valid SQL query, then executes it.
+### 📊 **Database Management**
+- **Flexible Upload**: Upload your own SQLite `.db` files
+- **Sample Databases**: Pre-loaded with `Chinook.db`, `Northwind.db`, and `VitalDB.db` for testing
+- **Multiple Database Support**: Switch between different databases seamlessly
 
-3. **Results Display & Download** 📊  
-   - Query results are displayed in a streamlined, interactive table with **AgGrid**.  
-   - Download your results as a `.csv` file directly from the app.
+### 🎯 **Results & Export**
+- **Interactive Tables**: Results displayed using AgGrid for enhanced user experience
+- **CSV Download**: Export query results directly to CSV format
+- **Real-time Updates**: Instant query execution and result display
 
-4. **Privacy & Safety Checks** 🔒  
-   - Optional **sensitive database** mode to restrict queries that expose personally identifiable or confidential information.  
-   - Only read-only queries are allowed (SELECT, CREATE VIEW) unless configured otherwise.
-
-5. **Error Handling** ❗  
-   - Friendly alerts for invalid queries, missing columns, or issues with database connections or AI responses.
-
----
-
-## Prerequisites 🛠️
-
-- **Python 3.7 or higher** 🐍  
-- **[Streamlit](https://streamlit.io/)**  
-- **[OpenAI API Key](https://platform.openai.com/account/api-keys)** 🔑  
-- Required Python libraries listed in `requirements.txt` (e.g., `pandas`, `numpy`, `st_aggrid`, etc.)
+### 🔒 **Security & Safety**
+- **Read-Only Operations**: Default restriction to SELECT and CREATE VIEW operations
+- **Privacy Protection**: Optional sensitive database mode for confidential data
+- **Error Handling**: Comprehensive error messages and validation
 
 ---
 
-## Setup
+## 🚀 Quick Start
 
-1. **Clone the repository**:
+### Prerequisites
+- Python 3.7+
+- OpenAI API Key
+- Streamlit
+
+### Installation
+
+1. **Clone the repository**
    ```bash
    git clone git@github.com:iris0614/SQLGenius.git
    cd SQLGenius
    ```
 
-2. **Install dependencies**:
+2. **Install dependencies**
    ```bash
    pip install -r requirements.txt
    ```
 
-3. **Set up environment variables**:
-   - Create a `.env` file in the root directory with your OpenAI API key:
-     ```env
-     OPENAI_API_KEY=your_openai_api_key
-     ```
+3. **Configure environment**
+   Create a `.env` file in the root directory:
+   ```env
+   OPENAI_API_KEY=your_openai_api_key_here
+   ```
 
-
-1. **Run the Streamlit app**:
+4. **Launch the application**
    ```bash
    streamlit run app.py
    ```
 
-After a moment, Streamlit will open a new tab in your browser (usually at `http://localhost:8501`).
+The app will open in your browser at `http://localhost:8501`
 
 ---
 
-## Example Workflow🛠️
+## 📖 Usage Guide
 
-1. **Select or Upload a Database**  
-   - For instance, choose `Northwind.db`.
+### Basic Workflow
 
-2. **Ask a Question (SQL Query area)**  
-   - Example:  
+1. **Select Database**
+   - Choose from pre-loaded sample databases, or
+   - Upload your own `.db` file
+
+2. **Ask Your Question**
+   - Type natural language questions like:
      ```
-     Which UK customers have paid us more than 1000 dollars?
+     Which UK customers have spent more than $1000?
+     Show me the top 10 products by sales volume
      ```
+   - Or write SQL queries directly
 
-3. **Click "Execute SQL Query"**  
-   - The AI will generate and run the SQL.  
-   - Results (number of customers by country) are shown in a table.
+3. **Execute & View Results**
+   - Click "Execute SQL Query"
+   - View results in the interactive table
+   - Download results as CSV if needed
+
+### Example Queries
+
+**Natural Language:**
+```
+"Find all employees who joined after 2010 and earn more than $50,000"
+```
+
+**Generated SQL:**
+```sql
+SELECT * FROM employees 
+WHERE hire_date > '2010-01-01' AND salary > 50000
+```
 
 ---
 
-## Troubleshooting🚑
+## 🗄️ Sample Databases
 
-- **Database Upload Errors**: Ensure your `.db` file is a valid SQLite database.  
-- **OpenAI API Errors**: Double-check that your API key is correct and has sufficient permissions/credits.  
-- **No Results Returned**: Check your SQL query logic or verify that relevant data is present in your database.  
+### Chinook Database
+- Music store database with artists, albums, tracks, and sales data
+- Perfect for learning SQL and testing queries
 
----
-
-## Data Sources📚
+### Northwind Database
+- Classic business database with customers, orders, products, and suppliers
+- Great for business analytics and reporting examples
 
 ### VitalDB
-
-The `medical_database.db` file (or `VitalDB.db`) used in this application is based on **VitalDB**, a high-fidelity multi-parameter vital signs database for surgical patients. The dataset, contributed by Hyung-Chul Lee and Chul-Woo Jung, provides comprehensive vital signs information valuable for research and analysis.
-
-- **Dataset Title**: VitalDB  
-- **Contributors**: Hyung-Chul Lee, Chul-Woo Jung  
-- **Version**: 1.0.0  
-- **Publication Date**: September 21, 2022  
-- **License**: Creative Commons Attribution 4.0 International Public License (CC BY 4.0)
-
-The dataset can be freely used, distributed, and modified as long as appropriate credit is given to the original authors. For more information, refer to the [Creative Commons Attribution 4.0 License](https://creativecommons.org/licenses/by/4.0/).
+- Medical database with patient vital signs and surgical data
+- Based on research data from Hyung-Chul Lee and Chul-Woo Jung
+- Licensed under Creative Commons Attribution 4.0 International
 
 ---
 
-## License📜
+## 🛠️ Troubleshooting
 
-This project is licensed under the [MIT License](LICENSE).  
+### Common Issues
+
+| Problem | Solution |
+|---------|----------|
+| Database upload fails | Ensure file is a valid SQLite `.db` format |
+| OpenAI API errors | Verify API key and check account credits |
+| No query results | Review SQL logic or check database content |
+| Connection issues | Restart the application and check database file |
+
+### Getting Help
+- Check that all dependencies are installed correctly
+- Verify your OpenAI API key has sufficient permissions
+- Ensure your database file is not corrupted
+
+---
+
+## 🔧 Technical Details
+
+### Architecture
+- **Frontend**: Streamlit web interface
+- **Backend**: Python with OpenAI API integration
+- **Database**: SQLite support with extensible architecture
+- **Data Processing**: Pandas for data manipulation and display
+
+### Dependencies
+Key packages include:
+- `streamlit` - Web application framework
+- `openai` - OpenAI API client
+- `pandas` - Data manipulation
+- `st-aggrid` - Interactive table display
+- `sqlite3` - Database operations
+
+---
+
+## 📚 Data Sources & Licensing
+
+### VitalDB Attribution
+The medical database used in this application is based on **VitalDB**, a high-fidelity multi-parameter vital signs database for surgical patients.
+
+- **Dataset**: VitalDB v1.0.0
+- **Contributors**: Hyung-Chul Lee and Chul-Woo Jung
+- **License**: Creative Commons Attribution 4.0 International (CC BY 4.0)
+- **Publication**: September 21, 2022
+
+### Project License
+This project is licensed under the [MIT License](LICENSE).
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions! Please feel free to submit issues, feature requests, or pull requests to improve SQL Genius.
+
+---
+
+## 🙏 Acknowledgments
+
+- **@yefan/tiny-sql-agent**: This project builds upon the foundational work and concepts from the [tiny-sql-agent](https://github.com/yefan/tiny-sql-agent) project
+- **OpenAI**: For providing the language model capabilities
+- **Streamlit**: For the excellent web application framework
+- **Contributors**: All contributors who have helped improve this project
 
 
